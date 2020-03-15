@@ -70,7 +70,6 @@ if [ -d "${CFG_DIR}" ] ; then
   CFG_FILE_LIST=`ls -1 "${CFG_DIR}" | grep "\.conf$" | sort`
   for CFG_FILE in `echo ${CFG_FILE_LIST}` ; do
     if [ -f "${CFG_DIR}/${CFG_FILE}" ] ; then
-      log_event "Processing config file: ${CFG_DIR}/${CFG_FILE}"
       ${SCRIPT_DIR}/update.py --config="${CFG_DIR}/${CFG_FILE}"
     fi
   done
