@@ -72,7 +72,7 @@ if [ -d "${CFG_DIR}" ] ; then
     if [ -f "${CFG_DIR}/${CFG_FILE}" ] ; then
       echo "${CFG_DIR}/${CFG_FILE}"
       cat "${CFG_DIR}/${CFG_FILE}"
-      ${SCRIPT_PATH}/update.py --config="${CFG_DIR}/${CFG_FILE}"
+      ${SCRIPT_DIR}/update.py --config="${CFG_DIR}/${CFG_FILE}"
     fi
   done
 fi
