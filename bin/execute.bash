@@ -69,9 +69,11 @@ fi
 if [ -d "${CFG_DIR}" ] ; then
   CFG_FILE_LIST=`ls -1 "${CFG_DIR}" | grep "\.conf$" | sort`
   for CFG_FILE in `echo ${CFG_FILE_LIST}` ; do
-    echo "${CFG_FILE}"
-    cat "${CFG_FILE}"
-    # ${SCRIPT_PATH}/update.py
+    if [ -f "${CFG_DIR}/${CFG_FILE}" ] ; then
+      echo "${CFG_DIR}/${CFG_FILE}"
+      cat "${CFG_DIR}/${CFG_FILE}"
+      # ${SCRIPT_PATH}/update.py
+    fi
   done
 fi
 
