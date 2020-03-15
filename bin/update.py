@@ -50,10 +50,9 @@ def main(argv):
     except getopt.GetoptError:
         usage()
     for opt, arg in opts:
-
         if opt in ("--config"):
             if not path.exists(arg):
-                usage('--config <arg> - file does not exist: ' + str(arg)
+                usage('--config <arg> - file does not exist: ' + str(arg))
             else:
                 config_file = str(arg)
 
