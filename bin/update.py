@@ -6,7 +6,8 @@ import string
 import urllib
 import socket
 import ConfigParser
-import os
+import os.path
+from os import path
 
 def get_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
