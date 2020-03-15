@@ -1,9 +1,12 @@
 #!/usr/bin/python2.7
 
+import sys
+import getopt
+import string
 import urllib
 import socket
 import ConfigParser
-import os.path
+import os
 
 def get_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
