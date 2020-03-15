@@ -75,12 +75,3 @@ if [ -d "${CFG_DIR}" ] ; then
     fi
   done
 fi
-
-### log_event "Updating Git workspace"
-if [ -f /etc/git_control/auto_updates/ddnd_update-namecheap.enabled ] ; then
-  cd "${SCRIPT_DIR}"
-  git pull -f --all >/dev/null
-  if [ "$?" -ne "0" ] ; then
-    usage "git pull -f --all command exited with errors"
-  fi
-fi
