@@ -59,6 +59,7 @@ def main(argv):
                 usage('--config <arg> - file does not exist: ' + str(arg))
             else:
                 config_file = str(arg)
+    update_dns_records(config_file)
 
 if __name__ == "__main__":
    main(sys.argv[1:])
