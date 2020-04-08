@@ -1,6 +1,7 @@
 #!/bin/bash
 
 CFG_DIR=/etc/ddns/namecheap/conf.d
+PATH=${PATH}:/usr/local/bin
 
 ### functions
 function log_event {
