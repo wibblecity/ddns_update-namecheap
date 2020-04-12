@@ -11,6 +11,7 @@ from os import path
 import json
 import hashlib
 import time
+from datetime import timedelta
 
 results_file = "/tmp/ddns.namecheap.json"
 
@@ -25,6 +26,11 @@ def get_ip():
     finally:
         s.close()
     return IP
+
+def get_uptime():
+    with open('/proc/uptime', 'r') as f:
+        uptime_seconds = int(f.readline().split()[0])
+    return uptime_seconds
 
 def usage(log_string=''):
     sys.stderr.write("\n")
@@ -99,6 +105,8 @@ def main(argv):
                 usage('--config <arg> - file does not exist: ' + str(arg))
             else:
                 config_file = str(arg)
+    if get_uptime() < 60:
+        time.sleep(60)
     check_dns_records(config_file)
 
 if __name__ == "__main__":
