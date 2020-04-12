@@ -29,7 +29,7 @@ def get_ip():
 
 def get_uptime():
     with open('/proc/uptime', 'r') as f:
-        uptime_seconds = int(f.readline().split()[0])
+        uptime_seconds = float(f.readline().split()[0])
     return uptime_seconds
 
 def usage(log_string=''):
