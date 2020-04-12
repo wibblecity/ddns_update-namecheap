@@ -70,7 +70,7 @@ def check_dns_records(config_file):
     node_fqdn = node_id + '.' + domain_name
     node_hash = hashlib.md5(str.encode(node_fqdn)).hexdigest()
     local_ip = get_ip()
-    web_page = urllib.urlopen("http://iptools.bizhat.com/ipv4.php")
+    web_page = urllib.urlopen("https://api.ipify.org/")
     ext_ip = web_page.read()
     if node_hash not in results:
         update_dns_records(node_id,domain_name,local_ip,ext_ip,password)
