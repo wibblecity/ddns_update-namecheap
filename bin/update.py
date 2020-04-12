@@ -1,11 +1,11 @@
-#!/usr/bin/python2.7
+#!/usr/bin/env python3
 
 import sys
 import getopt
 import string
-import urllib
+import urllib.request
 import socket
-import ConfigParser
+import configparser
 import os.path
 from os import path
 import json
@@ -28,8 +28,7 @@ def get_ip():
     return IP
 
 def get_uptime():
-    with open('/proc/uptime', 'r') as f:
-        uptime_seconds = float(f.readline().split()[0])
+    uptime_seconds = float(time.clock_gettime(time.CLOCK_MONOTONIC))
     return uptime_seconds
 
 def usage(log_string=''):
@@ -62,7 +61,7 @@ def update_results(node_fqdn,local_ip,ext_ip):
 
 def check_dns_records(config_file):
     results = get_results()
-    config = ConfigParser.RawConfigParser()
+    config = configparser.RawConfigParser()
     config.read(config_file)
     domain_name = config.get('Main', 'domain_name')
     node_id = config.get('Main', 'node_id')
@@ -70,8 +69,8 @@ def check_dns_records(config_file):
     node_fqdn = node_id + '.' + domain_name
     node_hash = hashlib.md5(str.encode(node_fqdn)).hexdigest()
     local_ip = get_ip()
-    web_page = urllib.urlopen("https://api.ipify.org/")
-    ext_ip = web_page.read()
+    web_page = urllib.request.urlopen("https://api.ipify.org/")
+    ext_ip = web_page.read().decode('utf-8')
     if node_hash not in results:
         update_dns_records(node_id,domain_name,local_ip,ext_ip,password)
         update_results(node_fqdn,local_ip,ext_ip)
@@ -89,9 +88,9 @@ def update_dns_records(a_record,domain_name,local_ip,ext_ip,password):
     print ('  External IP: ' + ext_ip)
     update_base_url = "https://dynamicdns.park-your-domain.com/update"
     update_url = update_base_url + "?host=" + a_record + "-int" + "&domain=" + domain_name + "&ip=" + local_ip + "&password=" + password
-    urllib.urlopen(update_url).read()
+    urllib.request.urlopen(update_url).read()
     update_url = update_base_url + "?host=" + a_record + "-ext" + "&domain=" + domain_name + "&ip=" + ext_ip + "&password=" + password
-    urllib.urlopen(update_url).read()
+    urllib.request.urlopen(update_url).read()
 
 def main(argv):
     character_set = ''
