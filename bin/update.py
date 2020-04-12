@@ -105,7 +105,7 @@ def main(argv):
                 usage('--config <arg> - file does not exist: ' + str(arg))
             else:
                 config_file = str(arg)
-    if get_uptime() < 120:
+    if get_uptime() < 60:
         time.sleep(60)
     check_dns_records(config_file)
 
