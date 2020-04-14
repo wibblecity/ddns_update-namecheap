@@ -28,13 +28,14 @@ def get_ip():
     return IP
 
 def get_ext_ip():
-    api_url = "https://api.ipify.org4/"
+    api_url = "https://api.ipify.org/"
     web_page = urllib.request.urlopen(api_url)
     ext_ip = web_page.read().decode('utf-8')
     if socket.inet_aton(ext_ip):
         return ext_ip
     else:
-        return -1
+        print("ERROR: Failure occurred when attempting to validate external IP address")
+        sys.exit(1)
 
 def get_uptime():
     uptime_seconds = float(time.clock_gettime(time.CLOCK_MONOTONIC))
@@ -79,19 +80,16 @@ def check_dns_records(config_file):
     node_hash = hashlib.md5(str.encode(node_fqdn)).hexdigest()
     local_ip = get_ip()
     ext_ip = get_ext_ip()
-    if ext_ip is not -1:
-        if node_hash not in results:
-            update_dns_records(node_id,domain_name,local_ip,ext_ip,password)
-            update_results(node_fqdn,local_ip,ext_ip)
-        elif results[node_hash]['update_time'] < int(time.time()) - (60 * 60 * 24):
-            update_dns_records(node_id,domain_name,local_ip,ext_ip,password)
-            update_results(node_fqdn,local_ip,ext_ip)
-        else:
-            if results[node_hash]['local_ip'] != local_ip or results[node_hash]['ext_ip'] != ext_ip:
-                update_dns_records(node_id,domain_name,local_ip,ext_ip,password)
-                update_results(node_fqdn,local_ip,ext_ip)
+    if node_hash not in results:
+        update_dns_records(node_id,domain_name,local_ip,ext_ip,password)
+        update_results(node_fqdn,local_ip,ext_ip)
+    elif results[node_hash]['update_time'] < int(time.time()) - (60 * 60 * 24):
+        update_dns_records(node_id,domain_name,local_ip,ext_ip,password)
+        update_results(node_fqdn,local_ip,ext_ip)
     else:
-        print("ERROR: Failure occurred when attempting to validate external IP address")
+        if results[node_hash]['local_ip'] != local_ip or results[node_hash]['ext_ip'] != ext_ip:
+            update_dns_records(node_id,domain_name,local_ip,ext_ip,password)
+            update_results(node_fqdn,local_ip,ext_ip)
 
 def update_dns_records(a_record,domain_name,local_ip,ext_ip,password):
     print ('Updating DDNS records for: ' + a_record + '.' + domain_name)
