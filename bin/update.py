@@ -78,7 +78,8 @@ def check_dns_records(config_file):
     node_fqdn = node_id + '.' + domain_name
     node_hash = hashlib.md5(str.encode(node_fqdn)).hexdigest()
     local_ip = get_ip()
-    if ext_ip = get_ext_ip():
+    ext_ip = get_ext_ip()
+    if ext_ip is not -1:
         if node_hash not in results:
             update_dns_records(node_id,domain_name,local_ip,ext_ip,password)
             update_results(node_fqdn,local_ip,ext_ip)
