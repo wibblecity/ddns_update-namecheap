@@ -28,8 +28,9 @@ def get_ip():
     return IP
 
 def get_ext_ip():
-    api_url = "https://api.ipify.org4/"
+    api_url = "https://api.ipify.org/"
     web_page = urllib.request.urlopen(api_url)
+    web_page = 'test fail data'
     ext_ip = web_page.read().decode('utf-8')
     if socket.inet_aton(ext_ip):
         return ext_ip
