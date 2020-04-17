@@ -28,9 +28,9 @@ def get_ip():
     return IP
 
 def get_ext_ip():
-    api_url = "https://api.ipify.org/"
-    web_page = urllib.request.urlopen(api_url)
-    ext_ip = web_page.read().decode('utf-8')
+    api_url = "http://ip-api.com/json/?fields=query"
+    api_data = json.load(urllib.request.urlopen(api_url))
+    ext_ip = api_data['query']
     if socket.inet_aton(ext_ip):
         return ext_ip
     else:
