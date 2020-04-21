@@ -1,0 +1,7 @@
+
+SHELL=/bin/bash
+PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/sbin:/usr/local/bin
+
+MAILTO={report email address}
+
+# * * * * * ddns-namecheap /opt/ddns_update-namecheap/bin/execute.bash
