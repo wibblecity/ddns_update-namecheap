@@ -1,5 +1,6 @@
 #!/bin/bash
 
+### variables
 CFG_DIR_BASE=/etc/ddns/namecheap
 CFG_DIR=${CFG_DIR_BASE}/conf.d
 PATH=${PATH}:/usr/local/bin
