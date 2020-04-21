@@ -12,6 +12,7 @@ import json
 import hashlib
 import time
 from datetime import timedelta
+import random
 
 results_file = "/tmp/ddns.namecheap.json"
 
@@ -115,6 +116,7 @@ def main(argv):
                 config_file = str(arg)
     if get_uptime() < 60:
         time.sleep(60)
+    time.sleep(random.randint(1, 30))
     check_dns_records(config_file)
 
 if __name__ == "__main__":
