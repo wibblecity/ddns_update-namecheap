@@ -84,14 +84,14 @@ def check_dns_records(config_file):
     ext_ip = get_ext_ip()
     perform_update = False
     if node_hash not in results:
-        perform_update = true
+        perform_update = True
     elif 'update_interval' not in results[node_hash]:
-        perform_update = true
+        perform_update = True
     elif results[node_hash]['update_time'] < results[node_hash]['update_interval']:
-        perform_update = true
+        perform_update = True
     else:
         if results[node_hash]['local_ip'] != local_ip or results[node_hash]['ext_ip'] != ext_ip:
-            perform_update = true
+            perform_update = True
     if perform_update:
         update_dns_records(node_id,domain_name,local_ip,ext_ip,password)
         update_results(node_fqdn,local_ip,ext_ip)
