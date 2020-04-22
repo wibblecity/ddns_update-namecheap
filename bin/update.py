@@ -82,19 +82,19 @@ def check_dns_records(config_file):
     node_hash = hashlib.md5(str.encode(node_fqdn)).hexdigest()
     local_ip = get_ip()
     ext_ip = get_ext_ip()
-    if node_hash not in results:
-        update_dns_records(node_id,domain_name,local_ip,ext_ip,password)
-        update_results(node_fqdn,local_ip,ext_ip)
-    elif update_interval not in results[node_hash]:
-        update_dns_records(node_id,domain_name,local_ip,ext_ip,password)
-        update_results(node_fqdn,local_ip,ext_ip)
+    perform_update = false
+    if not results[node_hash]:
+        perform_update = true
+    elif not results[node_hash]['update_interval']:
+        perform_update = true
     elif results[node_hash]['update_time'] < results[node_hash]['update_interval']:
-        update_dns_records(node_id,domain_name,local_ip,ext_ip,password)
-        update_results(node_fqdn,local_ip,ext_ip)
+        perform_update = true
     else:
         if results[node_hash]['local_ip'] != local_ip or results[node_hash]['ext_ip'] != ext_ip:
-            update_dns_records(node_id,domain_name,local_ip,ext_ip,password)
-            update_results(node_fqdn,local_ip,ext_ip)
+            perform_update = true
+    if perform_update:
+        update_dns_records(node_id,domain_name,local_ip,ext_ip,password)
+        update_results(node_fqdn,local_ip,ext_ip)
 
 def update_dns_records(a_record,domain_name,local_ip,ext_ip,password):
     print ('Updating DDNS records for: ' + a_record + '.' + domain_name)
