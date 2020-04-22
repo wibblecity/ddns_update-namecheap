@@ -85,7 +85,10 @@ def check_dns_records(config_file):
     if node_hash not in results:
         update_dns_records(node_id,domain_name,local_ip,ext_ip,password)
         update_results(node_fqdn,local_ip,ext_ip)
-    elif (results[node_hash]['update_time'] < results[node_hash]['update_interval']) or (update_interval not in results[node_hash]):
+    elif update_interval not in results[node_hash]:
+        update_dns_records(node_id,domain_name,local_ip,ext_ip,password)
+        update_results(node_fqdn,local_ip,ext_ip)
+    elif results[node_hash]['update_time'] < results[node_hash]['update_interval']:
         update_dns_records(node_id,domain_name,local_ip,ext_ip,password)
         update_results(node_fqdn,local_ip,ext_ip)
     else:
