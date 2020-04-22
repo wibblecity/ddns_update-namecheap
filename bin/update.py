@@ -82,7 +82,7 @@ def check_dns_records(config_file):
     node_hash = hashlib.md5(str.encode(node_fqdn)).hexdigest()
     local_ip = get_ip()
     ext_ip = get_ext_ip()
-    perform_update = false
+    perform_update = False
     if not results[node_hash]:
         perform_update = true
     elif not results[node_hash]['update_interval']:
