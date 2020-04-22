@@ -67,6 +67,7 @@ def update_results(node_fqdn,local_ip,ext_ip):
     results[node_hash]['local_ip'] = local_ip
     results[node_hash]['ext_ip'] = ext_ip
     results[node_hash]['update_time'] = int(time.time())
+    results[node_hash]['update_interval'] = int(random.randint((60 * 60 * 24), (60 * 60 * 24 * 2)))
     with open(results_file, 'w') as outfile:
         json.dump(results, outfile)
 
@@ -84,7 +85,7 @@ def check_dns_records(config_file):
     if node_hash not in results:
         update_dns_records(node_id,domain_name,local_ip,ext_ip,password)
         update_results(node_fqdn,local_ip,ext_ip)
-    elif results[node_hash]['update_time'] < int(time.time()) - (60 * 60 * 24):
+    elif results[node_hash]['update_time'] < results[node_hash]['update_interval']:
         update_dns_records(node_id,domain_name,local_ip,ext_ip,password)
         update_results(node_fqdn,local_ip,ext_ip)
     else:
