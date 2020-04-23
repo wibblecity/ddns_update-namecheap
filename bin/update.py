@@ -29,9 +29,9 @@ def get_ip():
     return IP
 
 def get_ext_ip():
-    api_url = "http://ip-api.com/json/?fields=query"
+    api_url = "https://7snwzdghk9.execute-api.eu-west-1.amazonaws.com/production"
     api_data = json.load(urllib.request.urlopen(api_url))
-    ext_ip = api_data['query']
+    ext_ip = api_data['ip']
     if socket.inet_aton(ext_ip):
         return ext_ip
     else:
