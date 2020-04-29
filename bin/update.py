@@ -87,7 +87,7 @@ def check_dns_records(config_file):
         perform_update = True
     elif 'update_interval' not in results[node_hash]:
         perform_update = True
-    elif results[node_hash]['update_time'] < results[node_hash]['update_interval']:
+    elif results[node_hash]['update_time'] < ( int(time.time()) - results[node_hash]['update_interval'] ):
         perform_update = True
     else:
         if results[node_hash]['local_ip'] != local_ip or results[node_hash]['ext_ip'] != ext_ip:
