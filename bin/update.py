@@ -28,8 +28,8 @@ def get_ip():
         s.close()
     return IP
 
-def get_ext_ip():
-    api_url = "https://7snwzdghk9.execute-api.eu-west-1.amazonaws.com/production"
+def get_ext_ip(ip_database_url,node_id,auth_token):
+    api_url = ip_database_url + "?node_id=" + node_id + "&auth_token=" + auth_token
     api_data = json.load(urllib.request.urlopen(api_url))
     ext_ip = api_data['ip']
     if socket.inet_aton(ext_ip):
@@ -75,13 +75,17 @@ def check_dns_records(config_file):
     results = get_results()
     config = configparser.RawConfigParser()
     config.read(config_file)
-    domain_name = config.get('Main', 'domain_name')
+    ip_database_url = config.get('Main', 'ip_database_url')
     node_id = config.get('Main', 'node_id')
+    auth_token = config.get('Main', 'auth_token')
     password = config.get('Main', 'password')
+    update_ddns = config.get('Main', 'update_ddns')
+    ddns_provider = config.get('Main', 'ddns_provider')
+    domain_name = config.get('Main', 'domain_name')
     node_fqdn = node_id + '.' + domain_name
     node_hash = hashlib.md5(str.encode(node_fqdn)).hexdigest()
     local_ip = get_ip()
-    ext_ip = get_ext_ip()
+    ext_ip = get_ext_ip(ip_database_url,node_id,auth_token)
     perform_update = False
     if node_hash not in results:
         perform_update = True
@@ -93,10 +97,12 @@ def check_dns_records(config_file):
         if results[node_hash]['local_ip'] != local_ip or results[node_hash]['ext_ip'] != ext_ip:
             perform_update = True
     if perform_update:
-        update_dns_records(node_id,domain_name,local_ip,ext_ip,password)
+        if update_ddns == "yes":
+            if ddns_provider == "NameCheap":
+                update_dns_records_using_namecheap(node_id,domain_name,local_ip,ext_ip,password)
         update_results(node_fqdn,local_ip,ext_ip)
 
-def update_dns_records(a_record,domain_name,local_ip,ext_ip,password):
+def update_dns_records_using_namecheap(a_record,domain_name,local_ip,ext_ip,password):
     print ('Updating DDNS records for: ' + a_record + '.' + domain_name)
     print ('  Local IP: ' + local_ip)
     print ('  External IP: ' + ext_ip)
