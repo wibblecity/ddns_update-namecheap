@@ -75,16 +75,17 @@ def check_dns_records(config_file):
     results = get_results()
     config = configparser.RawConfigParser()
     config.read(config_file)
-    domain_name = config.get('Main', 'domain_name')
+    ip_database_url = config.get('Main', 'ip_database_url')
     node_id = config.get('Main', 'node_id')
     auth_token = config.get('Main', 'auth_token')
     password = config.get('Main', 'password')
     update_ddns = config.get('Main', 'update_ddns')
     ddns_provider = config.get('Main', 'ddns_provider')
+    domain_name = config.get('Main', 'domain_name')
     node_fqdn = node_id + '.' + domain_name
     node_hash = hashlib.md5(str.encode(node_fqdn)).hexdigest()
     local_ip = get_ip()
-    ext_ip = get_ext_ip(node_id,auth_token)
+    ext_ip = get_ext_ip(ip_database_url,node_id,auth_token)
     perform_update = False
     if node_hash not in results:
         perform_update = True
