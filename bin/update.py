@@ -28,8 +28,8 @@ def get_ip():
         s.close()
     return IP
 
-def get_ext_ip():
-    api_url = "https://7snwzdghk9.execute-api.eu-west-1.amazonaws.com/production"
+def get_ext_ip(node_id,auth_token):
+    api_url = "https://7snwzdghk9.execute-api.eu-west-1.amazonaws.com/production?node_id=" + node_id + "&auth_token=" + auth_token
     api_data = json.load(urllib.request.urlopen(api_url))
     ext_ip = api_data['ip']
     if socket.inet_aton(ext_ip):
@@ -77,11 +77,12 @@ def check_dns_records(config_file):
     config.read(config_file)
     domain_name = config.get('Main', 'domain_name')
     node_id = config.get('Main', 'node_id')
+    auth_token = config.get('Main', 'auth_token')
     password = config.get('Main', 'password')
     node_fqdn = node_id + '.' + domain_name
     node_hash = hashlib.md5(str.encode(node_fqdn)).hexdigest()
     local_ip = get_ip()
-    ext_ip = get_ext_ip()
+    ext_ip = get_ext_ip(node_id,auth_token)
     perform_update = False
     if node_hash not in results:
         perform_update = True
